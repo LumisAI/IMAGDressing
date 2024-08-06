@@ -201,7 +201,18 @@ if __name__ == "__main__":
 
     if args.face_path is not None:
 
-        image = plt.imread(args.face_path)
+        image = cv2.imread(args.face_path)
+
+        # Check the number of channels
+        if image.shape[-1] == 4:
+            # Image has an alpha channel, convert to RGB
+            image = cv2.cvtColor(image, cv2.COLOR_RGBA2RGB)
+        elif image.shape[-1] == 1:
+            # Image is grayscale, convert to RGB
+            image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+        elif image.shape[-1] != 3:
+            raise ValueError(f"Unexpected number of color channels for face image: {image.shape[-1]}")
+
         faces = app.get(image)
 
         faceid_embeds = torch.from_numpy(faces[0].normed_embedding).unsqueeze(0)

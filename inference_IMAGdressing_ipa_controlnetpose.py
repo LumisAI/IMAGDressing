@@ -18,6 +18,7 @@ import argparse
 from adapter.resampler import Resampler
 from insightface.app import FaceAnalysis
 import cv2
+import matplotlib.pyplot as plt
 from insightface.utils import face_align
 
 
@@ -200,7 +201,7 @@ if __name__ == "__main__":
 
     if args.face_path is not None:
 
-        image = cv2.imread(args.face_path)
+        image = plt.imread(args.face_path)
         faces = app.get(image)
 
         faceid_embeds = torch.from_numpy(faces[0].normed_embedding).unsqueeze(0)

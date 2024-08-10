@@ -68,6 +68,6 @@ xxhash==3.4.1
 yarl==1.9.4
 zipp==3.18.1
 --find-links https://download.pytorch.org/whl/cu118
-torch==2.4.0+cu118
-torchvision==0.15.0+cu118
-torchaudio==2.4.0+cu118
+torch
+torchvision
+torchaudio

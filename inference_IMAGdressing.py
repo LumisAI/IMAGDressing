@@ -188,7 +188,7 @@ if __name__ == "__main__":
         num_inference_steps=50,
     ).images
 
-    print("Generated " + len(output) + " Images Total.")
+    print("Generated " + str(len(output)) + " Images Total.")
 
     # Side-by-side layout: refImage, genImage
     # save_output = []

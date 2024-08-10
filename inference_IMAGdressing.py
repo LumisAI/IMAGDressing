@@ -188,10 +188,16 @@ if __name__ == "__main__":
         num_inference_steps=50,
     ).images
 
-    save_output = []
-    save_output.append(output[0])
-    save_output.insert(0, clothes_img.resize((512, 640), Image.BICUBIC))
+    print("Generated " + len(output) + " Images Total.")
 
-    grid = image_grid(save_output, 1, 2)
-    grid.save(
+    # Side-by-side layout: refImage, genImage
+    # save_output = []
+    # save_output.append(output[0])
+    # save_output.insert(0, clothes_img.resize((512, 640), Image.BICUBIC))
+    # combined_output = image_grid(save_output, 1, 2)
+    
+    # Single layout: genImage
+    combined_output = output[0]
+    
+    combined_output.save(
         output_path + '/' + args.cloth_path.split("/")[-1])

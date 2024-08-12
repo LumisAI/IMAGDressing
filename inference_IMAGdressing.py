@@ -143,10 +143,17 @@ if __name__ == "__main__":
     parser.add_argument('--cloth_path', type=str, required=True)
     parser.add_argument('--output_path', type=str, default="./output_sd_base")
     parser.add_argument('--device', type=str, default="cuda:0")
+    parser.add_argument('--prompt', type=str, default="A beautiful woman, best quality, high quality")
+    parser.add_argument('--negative_prompt', type=str, default="bare, naked, nude, undressed, monochrome, lowres, bad, worst, low")
+    parser.add_argument('--width', type=float, default=512)
+    parser.add_argument('--height', type=float, default=640)
     args = parser.parse_args()
 
     # svae path
     output_path = args.output_path
+
+    width = args.width
+    height = args.height
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -158,15 +165,14 @@ if __name__ == "__main__":
     clip_image_processor = CLIPImageProcessor()
 
     img_transform = transforms.Compose([
-        transforms.Resize([640, 512], interpolation=transforms.InterpolationMode.BILINEAR),
+        transforms.Resize([height, width], interpolation=transforms.InterpolationMode.BILINEAR),
         transforms.ToTensor(),
         transforms.Normalize([0.5], [0.5]),
     ])
 
-    prompt = 'A beautiful woman'
-    prompt = prompt + ', best quality, high quality'
     null_prompt = ''
-    negative_prompt = 'bare, naked, nude, undressed, monochrome, lowres, bad anatomy, worst quality, low quality'
+    prompt = args.prompt
+    negative_prompt = args.negative_prompt
 
     clothes_img = Image.open(args.cloth_path).convert("RGB")
     clothes_img = resize_img(clothes_img)
@@ -179,8 +185,8 @@ if __name__ == "__main__":
         ref_clip_image=ref_clip_image,
         null_prompt=null_prompt,
         negative_prompt=negative_prompt,
-        width=512,
-        height=640,
+        width=width,
+        height=height,
         num_images_per_prompt=num_samples,
         guidance_scale=7.5,
         image_scale=1.0,
@@ -193,7 +199,7 @@ if __name__ == "__main__":
     # Side-by-side layout: refImage, genImage
     # save_output = []
     # save_output.append(output[0])
-    # save_output.insert(0, clothes_img.resize((512, 640), Image.BICUBIC))
+    # save_output.insert(0, clothes_img.resize((width, height), Image.BICUBIC))
     # combined_output = image_grid(save_output, 1, 2)
     
     # Single layout: genImage

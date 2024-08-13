@@ -12,6 +12,7 @@ from transformers import CLIPTextModel, CLIPTokenizer, CLIPVisionModelWithProjec
 from adapter.attention_processor import CacheAttnProcessor2_0, RefSAttnProcessor2_0, CAttnProcessor2_0
 import argparse
 from adapter.resampler import Resampler
+import random
 
 
 def resize_img(input_image, max_side=640, min_side=512, size=None,
@@ -45,7 +46,7 @@ def image_grid(imgs, rows, cols):
 
 
 def prepare(args):
-    generator = torch.Generator(device=args.device).manual_seed(42)
+    generator = torch.Generator(device=args.device).manual_seed(random.randint(1, 9999999))
     vae = AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse").to(dtype=torch.float16, device=args.device)
     tokenizer = CLIPTokenizer.from_pretrained("SG161222/Realistic_Vision_V4.0_noVAE", subfolder="tokenizer")
     text_encoder = CLIPTextModel.from_pretrained("SG161222/Realistic_Vision_V4.0_noVAE", subfolder="text_encoder").to(

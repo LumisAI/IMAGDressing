@@ -27,6 +27,11 @@ def resize_img(input_image, max_side=640, min_side=512, size=None,
 
     return input_image
 
+def resize_img2(input_image, width=512, height=640, size=None,
+               pad_to_max_side=False, mode=Image.BILINEAR, base_pixel_number=64):
+    input_image = input_image.resize([int(round(width)), int(round(height))], mode)
+    return input_image
+
 
 def image_grid(imgs, rows, cols):
     assert len(imgs) == rows * cols
@@ -152,8 +157,8 @@ if __name__ == "__main__":
     # svae path
     output_path = args.output_path
 
-    width = args.width
-    height = args.height
+    width = int(round(args.width))
+    height = int(round(args.height))
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -175,7 +180,7 @@ if __name__ == "__main__":
     negative_prompt = args.negative_prompt
 
     clothes_img = Image.open(args.cloth_path).convert("RGB")
-    clothes_img = resize_img(clothes_img)
+    clothes_img = resize_img2(clothes_img, width, height)
     vae_clothes = img_transform(clothes_img).unsqueeze(0)
     ref_clip_image = clip_image_processor(images=clothes_img, return_tensors="pt").pixel_values
 

@@ -167,7 +167,7 @@ if __name__ == "__main__":
     parser.add_argument('--cloth_path', type=str, required=True)
     parser.add_argument('--model_path', type=str, required=True)
     parser.add_argument('--output_path', type=str, default="./output_sd_inpaint")
-    parser.add_argument('--device', type=str, default="cuda:1")
+    parser.add_argument('--device', type=str, default="cuda:0")
     args = parser.parse_args()
 
     # svae path
@@ -178,8 +178,8 @@ if __name__ == "__main__":
     # prepare pipline
     pipe, generator = prepare(args)
     # prepare mask model
-    parsing_model = Parsing(1)
-    openpose_model = OpenPose(1)
+    parsing_model = Parsing(0)
+    openpose_model = OpenPose(0)
     print('====================== pipe load finish ===================')
 
     num_samples = 1

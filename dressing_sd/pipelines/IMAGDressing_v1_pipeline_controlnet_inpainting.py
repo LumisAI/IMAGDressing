@@ -92,9 +92,10 @@ class IMAGDressing_v1(StableDiffusionControlNetInpaintPipeline):
         do_classifier_free_guidance=False,
         guess_mode=False,
     ):
-        image = self.control_image_processor.preprocess(
-            image, height=height, width=width, crops_coords=crops_coords, resize_mode=resize_mode
-        ).to(dtype=torch.float32)
+        # image = self.control_image_processor.preprocess(
+        #     image, height=height, width=width, crops_coords=crops_coords, resize_mode=resize_mode
+        # ).to(dtype=torch.float32) tempct
+        image = self.control_image_processor.preprocess(image, height=height, width=width).to(dtype=torch.float32)
         image_batch_size = image.shape[0]
 
         if image_batch_size == 1:
@@ -300,13 +301,20 @@ class IMAGDressing_v1(StableDiffusionControlNetInpaintPipeline):
 
         # 4.1 Preprocess mask and image - resizes image and mask w.r.t height and width
         original_image = image
+        # init_image = self.image_processor.preprocess(
+        #     image, height=height, width=width, crops_coords=crops_coords, resize_mode=resize_mode
+        # ) tempct
         init_image = self.image_processor.preprocess(
-            image, height=height, width=width, crops_coords=crops_coords, resize_mode=resize_mode
+            image, height=height, width=width
         )
         init_image = init_image.to(dtype=torch.float32)
 
+        # mask = self.mask_processor.preprocess(
+        #     mask_image, height=height, width=width, resize_mode=resize_mode, crops_coords=crops_coords
+        # ) tempct
+
         mask = self.mask_processor.preprocess(
-            mask_image, height=height, width=width, resize_mode=resize_mode, crops_coords=crops_coords
+            mask_image, height=height, width=width
         )
 
         masked_image = init_image * (mask < 0.5)
